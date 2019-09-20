@@ -16,8 +16,13 @@ import javax.jms.Queue;
  */
 @Component
 public class MsgConsumerServiceImpl implements MsgConsumerService {
+
+
+    /**
+     * 默认消息队列
+     * */
     @Resource
-    private Queue queue; //默认消息队列
+    private Queue queue;
     @Resource
     private JmsMessagingTemplate jmsMessagingTemplate;
     /**
@@ -26,7 +31,7 @@ public class MsgConsumerServiceImpl implements MsgConsumerService {
     @Override
     public void receivedMsg() {
         Message message =jmsMessagingTemplate.receive(queue);
-        System.out.println(message.getPayload().toString()+"jsjsjjsjjs");
+        System.out.println(message.getPayload().toString()+"jess's");
     }
 
     /**

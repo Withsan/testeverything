@@ -17,7 +17,7 @@ import java.util.Date;
 @Component
 @PropertySources({
         @PropertySource("classpath:prop.properties"),
-        @PropertySource("classpath:application.properties")//application其实不必使用次注解
+        @PropertySource("classpath:application.properties")//application其实不必使用此注解
 })
 
 public class SimpleSchedule {

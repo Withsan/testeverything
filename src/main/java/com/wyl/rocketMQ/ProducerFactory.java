@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 /**
+ * @author Wyl
  * @Description
  * Simple Message Example
  *  ON THIS PAGE
@@ -36,6 +37,7 @@ import javax.annotation.PostConstruct;
  * Reliable synchronous transmission is used in extensive scenes, such as important notification messages, SMS notification, SMS marketing system, etc
  * @auther Wyl
  * @create 2019-08-15 16:18
+ * 也可以使用@Bean方式返回 DefaultMQProducer
  */
 @Component
 public class ProducerFactory {

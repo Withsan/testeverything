@@ -1,4 +1,4 @@
-package com.wyl.configuration;
+package com.wyl.activeMQ.config;
 
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.activemq.command.ActiveMQTopic;
@@ -14,6 +14,7 @@ import javax.jms.Queue;
 import javax.jms.Topic;
 
 /**
+ * @author Wyl
  * @Description
  * @auther Wyl
  * @create 2019-08-14 14:36

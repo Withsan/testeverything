@@ -5,6 +5,6 @@ package com.wyl.activeMQ.consumer.service;
  * @auther Wyl
  * @create 2019-08-14 20:17
  */
-public interface TopicPubService {
+public interface     TopicPubService {
     public void publishMsg(String msg);
 }

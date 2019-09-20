@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.jms.Topic;
 
 /**
+ * @author Wyl
  * @Description
  * @auther Wyl
  * @create 2019-08-14 20:17
@@ -18,6 +19,7 @@ public class TopicPubImpl implements TopicPubService {
     private JmsMessagingTemplate jmsMessagingTemplate;
     @Resource
     private Topic topic;
+    @Override
     public void publishMsg(String msg){
         jmsMessagingTemplate.convertAndSend(topic,msg);
     }

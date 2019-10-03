@@ -15,8 +15,8 @@ import java.util.concurrent.Future;
 @Async
 public class AsyncTask {
     public Future<String> taskFuture() throws InterruptedException{
-        System.out.println("马上完了");
-        Thread.currentThread().sleep(20000L);
-        return new AsyncResult<> ("完了");
+        System.out.println("3");
+        Thread.currentThread().sleep(10000L);
+        return new AsyncResult<> ("4");
     }
 }

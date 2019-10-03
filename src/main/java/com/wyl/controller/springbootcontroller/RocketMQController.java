@@ -1,10 +1,7 @@
 package com.wyl.controller.springbootcontroller;
 
-import com.wyl.rocketMQ.Consumers;
 import com.wyl.rocketMQ.ProducerFactory;
-import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
-import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
-import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
+import com.wyl.rocketMQ.QueueSelecter.MyQueueSelector;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
@@ -15,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Description
@@ -40,6 +40,68 @@ public class RocketMQController {
             System.out.println(sendResult.toString());
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    /**
+     * 1.1 使用同步发送方式来确保消息投递的顺序性，并且使用queueSelector确定投递到哪一个queue
+     * */
+    @PostMapping("/sendMsgOrderly")
+    public void sendMsgOrderly(String topic, String tag, String msg) {
+        DefaultMQProducer mqProducer = producerFactory.getProducer();
+        List<OrderMsg> orderMsgs = new ArrayList<>(15);
+        OrderMsg orderMsg ;
+        for (int i = 0; i < 3; i++) {
+            orderMsg = new OrderMsg("20191003"+i,"创建订单");
+            orderMsgs.add(orderMsg);
+            orderMsg = new OrderMsg("20191003"+i,"支付订单");
+            orderMsgs.add(orderMsg);
+            orderMsg = new OrderMsg("20191003"+i,"评价订单");
+            orderMsgs.add(orderMsg);
+        }
+        MyQueueSelector myQueueSelector = new MyQueueSelector();
+        try {
+            for (int i = 0; i < orderMsgs.size(); i++) {
+                Message message = new Message(topic,
+                        tag, (orderMsgs.get(i).toString()).getBytes(RemotingHelper.DEFAULT_CHARSET)
+                );
+                SendResult sendResult = mqProducer.send(message,myQueueSelector,orderMsgs.get(i).orderId);
+                System.err.println(sendResult);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    class OrderMsg implements Serializable {
+        private static final long serialVersionUID = 1234L;
+        private String orderId;
+        private String orderStstus;
+        public OrderMsg(String orderId,String orderStstus){
+            this.orderId = orderId;
+            this.orderStstus = orderStstus;
+        }
+        public String getOrderId() {
+            return orderId;
+        }
+
+        public void setOrderId(String orderId) {
+            this.orderId = orderId;
+        }
+
+        public String getOrderStstus() {
+            return orderStstus;
+        }
+
+        public void setOrderStstus(String orderStstus) {
+            this.orderStstus = orderStstus;
+        }
+
+        @Override
+        public String toString() {
+            return "OrderMsg{" +
+                    "orderId='" + orderId + '\'' +
+                    ", orderStstus='" + orderStstus + '\'' +
+                    '}';
         }
     }
     /**
@@ -81,24 +143,5 @@ public class RocketMQController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Resource
-    Consumers consumerFactory;
-
-    @RequestMapping("/getMsg")
-    public void getMsg(String topic, String tag) {
-        DefaultMQPushConsumer consumer = consumerFactory.getConsumer();
-        try {
-            consumer.subscribe(topic, tag);
-            consumer.registerMessageListener((MessageListenerConcurrently) (msg, context) -> {
-                msg.stream().forEach(System.out::println);
-                return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
-            });
-            consumer.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 }

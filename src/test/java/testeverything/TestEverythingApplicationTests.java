@@ -57,9 +57,10 @@ public class TestEverythingApplicationTests {
 		Future a = asyncTask.taskFuture();
 		System.out.println("1");
 		System.out.println("2");
+		//这一步是阻塞的
 		System.out.println(a.get().toString());
-		System.out.println("3");
-		System.out.println("4");
+		System.out.println("5");
+		System.out.println("6");
 	}
 	//测试java8
 	@Resource

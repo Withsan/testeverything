@@ -46,9 +46,9 @@ public class RocketMQController {
      * 1.1 使用同步发送方式来确保消息投递的顺序性，并且使用queueSelector确定投递到哪一个queue
      * */
     @PostMapping("/sendMsgOrderly")
-    public void sendMsgOrderly(String topic, String tag, String msg) {
+    public void sendMsgOrderly(String topic, String tag) {
         DefaultMQProducer mqProducer = producerFactory.getProducer();
-        List<OrderMsg> orderMsgs = new ArrayList<>(15);
+        List<OrderMsg> orderMsgs = new ArrayList<>(3);
         OrderMsg orderMsg ;
         for (int i = 0; i < 3; i++) {
             orderMsg = new OrderMsg("20191003"+i,"创建订单");

@@ -1,7 +1,7 @@
 package com.wyl.controller.springbootcontroller;
 
-import com.wyl.rocketMQ.ProducerFactory;
-import com.wyl.rocketMQ.QueueSelecter.MyQueueSelector;
+import com.wyl.rocketMQ.producerfatory.ProducerFactory;
+import com.wyl.rocketMQ.queueSelecter.MyQueueSelector;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
@@ -26,6 +26,8 @@ import java.util.List;
 public class RocketMQController {
     @Resource
     private ProducerFactory producerFactory;
+    @Resource
+    private MyQueueSelector myQueueSelector;
     /**
      * 1 同步消息 会等到接收方返回响应之后才会发送下一条消息
      * */
@@ -58,7 +60,6 @@ public class RocketMQController {
             orderMsg = new OrderMsg("20191003"+i,"评价订单");
             orderMsgs.add(orderMsg);
         }
-        MyQueueSelector myQueueSelector = new MyQueueSelector();
         try {
             for (int i = 0; i < orderMsgs.size(); i++) {
                 Message message = new Message(topic,
@@ -112,7 +113,7 @@ public class RocketMQController {
         DefaultMQProducer mqProducer = producerFactory.getProducer();
         try {
             Message message = new Message(topic,
-                    tag, (msg).getBytes(RemotingHelper.DEFAULT_CHARSET)
+                    tag,msg.getBytes(RemotingHelper.DEFAULT_CHARSET)
             );
             mqProducer.send(message, new SendCallback() {
                 @Override

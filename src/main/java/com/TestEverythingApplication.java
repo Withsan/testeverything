@@ -3,7 +3,6 @@ package com;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -25,7 +24,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAsync
 
 //开启支持JMS
-@EnableJms
+//@EnableJms
 
 //开启aop（默认已经开启）
 //@EnableAspectJAutoProxy

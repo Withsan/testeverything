@@ -1,6 +1,9 @@
 package com.wyl.redis;
 
+import org.checkerframework.checker.units.qual.K;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -19,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 public class RedisClient {
 
     @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate redisTemplate;
 
     // =============================common============================
 
@@ -134,7 +137,25 @@ public class RedisClient {
             return false;
         }
     }
+    public Boolean setIfAbsent(String  key, Object value){
+        return redisTemplate.opsForValue().setIfAbsent(key,value);
+    }
 
+    /**
+     * Set {@code key} to hold the string {@code value} and expiration {@code timeout} if {@code key} is absent.
+     *
+     * @param key must not be {@literal null}.
+     * @param value must not be {@literal null}.
+     * @param timeout the key expiration timeout.
+     * @param unit must not be {@literal null}.
+     * @return {@literal null} when used in pipeline / transaction.
+     * @since 2.1
+     * @see <a href="https://redis.io/commands/set">Redis Documentation: SET</a>
+     */
+    @Nullable
+    public Boolean setIfAbsent(String key, Object value, long timeout, TimeUnit unit){
+        return redisTemplate.opsForValue().setIfAbsent(key,value,timeout,unit);
+    }
     /**
      * 递增
      *
@@ -569,5 +590,8 @@ public class RedisClient {
             e.printStackTrace();
             return 0;
         }
+    }
+    public <T> T execute(DefaultRedisScript<T> redisScript,List<String> keys,Object... args){
+        return (T) redisTemplate.execute(redisScript,keys,args);
     }
 }

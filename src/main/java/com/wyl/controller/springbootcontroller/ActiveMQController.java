@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
+ * @author Wyl
  * @Description
- * @auther Wyl
  * @create 2019-08-10 15:29
  */
 @RestController

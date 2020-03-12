@@ -7,16 +7,16 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.Future;
 
 /**
+ * @author Wyl
  * @Description
- * @auther Wyl
  * @create 2019-08-12 17:03
  */
 @Component
-@Async
 public class AsyncTask {
+    @Async
     public Future<String> taskFuture() throws InterruptedException{
         System.out.println("3");
-        Thread.currentThread().sleep(10000L);
+        Thread.sleep(10000L);
         return new AsyncResult<> ("4");
     }
 }
